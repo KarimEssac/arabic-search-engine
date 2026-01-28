@@ -1,0 +1,31 @@
+{
+  "name": "arabic-search-engine",
+  "version": "2.0.0",
+  "description": "Modular Arabic/Persian search engine with fuzzy matching, TF-IDF, and semantic search capabilities",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "arabic",
+    "persian",
+    "search",
+    "fuzzy-matching",
+    "tfidf",
+    "semantic-search",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.0",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
