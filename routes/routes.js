@@ -228,11 +228,27 @@ perfLog.termsRanked = Date.now();
         LIMIT 100
       `;
       
-      const variantResult = await pool.query(variantQuery, [enhancedSearchTerms]);
-      
-      const existingIds = new Set(result.rows.map(r => r.id));
-      const newRows = variantResult.rows.filter(r => !existingIds.has(r.id));
-      result.rows = [...result.rows, ...newRows];
+      try {
+        const variantResult = await pool.query(variantQuery, [enhancedSearchTerms]);
+        const existingIds = new Set(result.rows.map(r => r.id));
+        const newRows = variantResult.rows.filter(r => !existingIds.has(r.id));
+        result.rows = [...result.rows, ...newRows];
+      } catch (fuzzyError) {
+        const debugInfo = `
+          <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 20px; margin: 20px 0; direction: ltr; text-align: left;">
+            <h3 style="color: #856404; margin-top: 0;">Database Error Details</h3>
+            <p><strong>Error Message:</strong> ${fuzzyError.message}</p>
+            <p><strong>Error Code:</strong> ${fuzzyError.code || 'N/A'}</p>
+            <p><strong>Query Word Count:</strong> ${queryWordCount}</p>
+            <p><strong>Similarity Threshold:</strong> ${similarityThreshold}</p>
+            <p><strong>Enhanced Search Terms:</strong> ${JSON.stringify(enhancedSearchTerms)}</p>
+            <p><strong>Enhanced Search Terms Length:</strong> ${enhancedSearchTerms ? enhancedSearchTerms.length : 'undefined'}</p>
+            <p><strong>Enhanced Search Terms Type:</strong> ${typeof enhancedSearchTerms}</p>
+            <p><strong>Stack:</strong> <pre style="background: #f8f9fa; padding: 10px; overflow-x: auto;">${fuzzyError.stack}</pre></p>
+          </div>
+        `;
+        return res.status(500).send(generateHTML('خطأ في البحث', debugInfo));
+      }
     }
     
     perfLog.sqlCompleted = Date.now();
