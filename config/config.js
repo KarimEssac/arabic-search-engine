@@ -15,9 +15,9 @@ const CONFIG = {
 // Database Configuration
 const DB_CONFIG = {
   user: 'postgres',
-  host: 'localhost',
-  database: 'arabic_search_demo',
-  password: 'postgres',
+  host: '185.218.124.166',
+  database: 'booky',
+  password: 'Joker2055$$Joker',
   port: 5432,
 };
 
